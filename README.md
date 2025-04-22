@@ -1,1 +1,3 @@
-# template-repository
+# lis_gfa
+This repository contains the needful for building a container with the executables and scripts used in the current protocol for assigning proteomes to gene families in the LIS system. The script run_hmmsearch.bash assumes that the hmmpress-ed library used as the target gene family build resides at $DATA (ie you need to export DATA=/path/to/hmmdata before running). The compressed results of the search will be written into a subfolder (named for the gene family target) and spec-compliant gfa files can be derived from the hmmsearch output as: 
+`zcat <hmmsearch_output_folder>//proteins.hmmsearch.tbl.gz | apptainer exec lis_gfa.sif hmmsearch_extract.pl > <gfa_file>`
