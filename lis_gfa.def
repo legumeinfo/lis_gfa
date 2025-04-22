@@ -1,0 +1,25 @@
+Bootstrap: docker
+From: debian:bookworm-slim
+Stage: build
+%post -c /bin/bash
+    set -o errexit -o nounset -o pipefail
+    apt update
+    apt install -y build-essential wget
+    wget http://eddylab.org/software/hmmer3/CURRENT/hmmer-3.1b2.tar.gz
+    tar xvf hmmer-3.1b2.tar.gz
+    cd hmmer-3.1b2
+    ./configure --enable-portable-binary --prefix=/hmmer && make && make install
+    cd easel
+    make install
+
+Bootstrap: docker
+From: debian:bookworm-slim
+
+%files
+    . /usr/local/lis_gfa
+%files from build
+    /hmmer/bin
+
+%environment
+    export LC_ALL=C
+    export PATH=/usr/local/lis_gfa:/hmmer/bin:${PATH}
